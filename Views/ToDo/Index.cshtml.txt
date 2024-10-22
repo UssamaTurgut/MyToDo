@@ -1,0 +1,27 @@
+@model IEnumerable<MyToDo.Models.TodoItem>
+
+<h1>My ToDo List</h1>
+<form method="post" asp-action="Add">
+    <input type="text" name="task" placeholder="New Task" required />
+    <button type="submit">Add</button>
+</form>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @item.Task 
+            @if (!item.IsCompleted)
+            {
+                <form method="post" asp-action="Complete">
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <button type="submit">Complete</button>
+                </form>
+            }
+            else
+            {
+                <strong>(Completed)</strong>
+            }
+        </li>
+    }
+</ul>

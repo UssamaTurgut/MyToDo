@@ -1,0 +1,41 @@
+using Microsoft.AspNetCore.Mvc;
+using MyToDo.Models;
+using System.Collections.Generic;
+
+namespace MyToDo.Controllers
+{
+    public class TodoController : Controller
+    {
+        private static List<TodoItem> todoItems = new List<TodoItem>();
+
+        public IActionResult Index()
+        {
+            return View(todoItems);
+        }
+
+        [HttpPost]
+        public IActionResult Add(string task)
+        {
+            var newTodo = new TodoItem
+            {
+                Id = todoItems.Count + 1,
+                Task = task,
+                IsCompleted = false,
+                CreatedAt = DateTime.Now
+            };
+            todoItems.Add(newTodo);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Complete(int id)
+        {
+            var item = todoItems.Find(t => t.Id == id);
+            if (item != null)
+            {
+                item.IsCompleted = true;
+            }
+            return RedirectToAction("Index");
+        }
+    }
+}
